@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">错题本</string>
+    <string name="text_title">题目：</string>
+    <string name="text_answer">答案：</string>
+    <string name="text_solution">解答:</string>
+    <string name="text_insert">插入</string>
+    <string name="text_add_category">新增类别</string>
+    <string name="text_pick_from_gallery">从图库选择</string>
+    <string name="text_take_a_photo">照一张图片</string>
+    <string name="text_no_camera">没有相机</string>
+</resources>

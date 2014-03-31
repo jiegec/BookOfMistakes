@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Book Of Mistakes</string>
+    <string name="text_title">Title:</string>
+    <string name="text_answer">Answer:</string>
+    <string name="text_solution">Solution:</string>
+    <string name="text_insert">Insert</string>
+    <string name="text_add_category">Add Category</string>
+    <string name="text_pick_from_gallery">Pick from gallery</string>
+    <string name="text_take_a_photo">Take a photo</string>
+    <string name="text_no_camera">No camera</string>
+</resources>
