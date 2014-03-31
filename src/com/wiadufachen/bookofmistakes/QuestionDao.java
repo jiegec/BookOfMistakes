@@ -102,10 +102,11 @@ public class QuestionDao {
         return persons;
     }
 
-    public List<Question> findByCategoryId(Integer category) {
+    public List<Question> findByCategoryIdAndFilter(Integer category,String filter) {
         List<Question> persons = new ArrayList<Question>();
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from questions where category=?",  new String[] { String.valueOf(category) });
+        Cursor cursor = db.rawQuery("select * from questions where category=? and title like ?",  new String[] { String.valueOf(category) ,"%"
+         + filter + "%"});
         while (cursor.moveToNext()) {
             persons.add(new Question(cursor.getInt(0), cursor.getString(1),
                     cursor.getString(2),cursor.getString(3), cursor.getInt(4)));

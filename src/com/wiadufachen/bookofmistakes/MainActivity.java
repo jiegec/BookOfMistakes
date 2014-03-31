@@ -2,6 +2,7 @@ package com.wiadufachen.bookofmistakes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,10 +32,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Created by win7 on 14-2-15.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements
+        SearchView.OnQueryTextListener, SearchView.OnCloseListener{
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
     private Button buttonAddCategory;
+    private SearchView search;
 
     private class Holder {
         private Category category;
@@ -103,6 +106,12 @@ public class MainActivity extends Activity {
         expandableListView.setAdapter(expandableListAdapter);
         GetQuestionAsyncTask task = new GetQuestionAsyncTask();
         task.execute();
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        search = (SearchView) findViewById(R.id.searchView);
+        search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        search.setIconifiedByDefault(false);
+        search.setOnQueryTextListener(this);
+        search.setOnCloseListener(this);
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -140,6 +149,39 @@ public class MainActivity extends Activity {
                 d.show();
             }
         });
+    }
+
+    public static String filter = "";
+
+    @Override
+    public boolean onClose() {
+        filter = "";
+        update();
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        filter = query;
+        update();
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        filter = query;
+        update();
+        expandAll();
+        return false;
+    }
+
+    private void expandAll() {
+        int count = expandableListAdapter.getGroupCount();
+        for (int i = 0; i < count; i++){
+            expandableListView.expandGroup(i);
+        }
     }
 
     private class QuestionExpandableListAdapter extends BaseExpandableListAdapter {
@@ -319,7 +361,7 @@ public class MainActivity extends Activity {
             QuestionDao q = new QuestionDao(MainActivity.this);
             ArrayList<Holder> temp = new ArrayList<Holder>();
             for (Category category : c.getAll()) {
-                List<Question> questions = q.findByCategoryId(category.getId());
+                List<Question> questions = q.findByCategoryIdAndFilter(category.getId(), MainActivity.filter);
                 Holder h = new Holder(category, questions);
                 temp.add(h);
             }
